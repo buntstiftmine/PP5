@@ -43,8 +43,83 @@ In this exercise you will:
 **Your Commands & Output**
 
 ```bash
-# Paste here the sequence of git commands you ran
-# and the relevant terminal output (e.g., branch listing, merge messages)
+mine@MinesOmen:/home$ cd /home/mine
+mine@MinesOmen:~$ mkdir newdir
+mine@MinesOmen:~$ cd newdir
+mine@MinesOmen:~/newdir$ ls
+mine@MinesOmen:~/newdir$ git init
+Initialized empty Git repository in /home/mine/newdir/.git/
+mine@MinesOmen:~/newdir$ git status
+On branch master
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+mine@MinesOmen:~/newdir$ git log
+fatal: your current branch 'master' does not have any commits yet
+mine@MinesOmen:~/newdir$ git checkout -b feature-1
+Switched to a new branch 'feature-1'
+mine@MinesOmen:~/newdir$ touch feature.txt
+mine@MinesOmen:~/newdir$ vim feature.txt
+mine@MinesOmen:~/newdir$ cat feature.txt
+I created this file to write a description of what I am doing.
+mine@MinesOmen:~/newdir$ git add feature.txt
+mine@MinesOmen:~/newdir$ git status
+On branch feature-1
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   feature.txt
+
+mine@MinesOmen:~/newdir$ git commit -m "featurecommit"
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <mine@MinesOmen.>) not allowed
+mine@MinesOmen:~/newdir$ git config --global user.email "marie.schmalz@stud.thga.de"
+mine@MinesOmen:~/newdir$ git config --global user.name "Mine"
+mine@MinesOmen:~/newdir$ git commit -m "firstcommit"
+[feature-1 (root-commit) 992ae39] firstcommit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 feature.txt
+
+
+
+???
+mine@MinesOmen:~/newdir$ git checkout master
+error: pathspec 'master' did not match any file(s) known to git
+mine@MinesOmen:~/newdir$ git checkout main
+error: pathspec 'main' did not match any file(s) known to git
+mine@MinesOmen:~/newdir$ git checkout master
+error: pathspec 'master' did not match any file(s) known to git
+mine@MinesOmen:~/newdir$ git checkout -b master
+Switched to a new branch 'master'
+mine@MinesOmen:~/newdir$ git checkout feature-1
+Switched to branch 'feature-1'
+mine@MinesOmen:~/newdir$ git checkout master
+Switched to branch 'master'
+mine@MinesOmen:~/newdir$ git merge fuature-1 master
+merge: fuature-1 - not something we can merge
+mine@MinesOmen:~/newdir$ git merge feature-1 master
+Already up to date.
+mine@MinesOmen:~/newdir$ git log
+commit dc437bd40af3448821eff888999b2d4d78f511b7 (HEAD -> master, feature-1)
+Author: Mine <marie.schmalz@stud.thga.de>
+Date:   Sun May 18 17:37:12 2025 +0200
+
+    featurecommit
+
 ```
 
 ---
@@ -67,7 +142,62 @@ In this exercise you will:
 **Your Commands & Output**
 
 ```bash
-# Paste here the push & clone commands and outputs
+mine@MinesOmen:~$ ssh testserver
+Enter passphrase for key '/home/mine/testkey':
+Linux Uranus 5.10.0-0.deb10.16-amd64 #1 SMP Debian 5.10.127-2~bpo10+1 (2022-07-28) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue May 13 20:44:21 2025 from 192.168.2.203
+root@Uranus:~# mkdir mine
+root@Uranus:~# cd mine
+root@Uranus:~/mine# ls
+root@Uranus:~/mine# mkdir pp5
+root@Uranus:~/mine# cd pp5
+root@Uranus:~/mine/pp5# mkdir -p ~/mine/pp5/repos/myproject.git && cd ~/mine/pp5/repos/myproject.git && git init --bare
+Leeres Git-Repository in /root/mine/pp5/repos/myproject.git/ initialisiert
+root@Uranus:~/repos/myproject.git#
+root@Uranus:~/repos/myproject.git# exit
+Abgemeldet
+Connection to 192.168.2.110 closed.
+mine@MinesOmen:~$ cd newdir
+mine@MinesOmen:~/newdir$ git push -u origin-ssh master
+Enter passphrase for key '/home/mine/testkey':
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 24 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 273 bytes | 273.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To testserver:~/mine/pp5/repos/myproject.git
+ * [new branch]      master -> master
+branch 'master' set up to track 'origin-ssh/master'.
+mine@MinesOmen:~/newdir$ cd ~
+mine@MinesOmen:~$ mkdir newdirclone
+mine@MinesOmen:~$ cd newdirclone
+mine@MinesOmen:~/newdirclone$ git clone testserver:~/mine/pp5/repos/myproject.git
+Cloning into 'myproject'...
+Enter passphrase for key '/home/mine/testkey':
+remote: Objekte aufzählen: 3, Fertig.
+remote: Zähle Objekte: 100% (3/3), Fertig.
+remote: Komprimiere Objekte: 100% (2/2), Fertig.
+remote: Gesamt 3 (Delta 0), Wiederverwendet 0 (Delta 0)
+Receiving objects: 100% (3/3), done.
+mine@MinesOmen:~/newdirclone$ ls
+myproject
+mine@MinesOmen:~/newdirclone$ cd myproject
+mine@MinesOmen:~/newdirclone/myproject$ ls
+feature.txt
+mine@MinesOmen:~/newdirclone/myproject$ git log
+commit dc437bd40af3448821eff888999b2d4d78f511b7 (HEAD -> master, origin/master, origin/HEAD)
+Author: Mine <marie.schmalz@stud.thga.de>
+Date:   Sun May 18 17:37:12 2025 +0200
+
+    featurecommit
 ```
 
 ---
